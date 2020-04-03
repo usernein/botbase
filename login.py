@@ -25,7 +25,9 @@ with open('config.ini','w') as fp:
     config.write(fp)
 
 async def init():
-    print('Logging in and creating .session file...')
+    print('Logging in and creating new .session file...')
+    if os.path.exists('bot.session'):
+        os.remove('bot.session')
     client = Client('bot', plugins={'enabled':False})
     await client.start()
     
