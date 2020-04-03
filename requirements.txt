@@ -4,6 +4,7 @@ tgcrypto
 pyyaml
 langs
 termcolor
+meval
 
 sqlalchemy
 orm~=0.1
