@@ -1,0 +1,14 @@
+https://github.com/pyrogram/pyrogram/archive/asyncio-dev.zip
+pyromod
+tgcrypto
+pyyaml
+langs
+termcolor
+
+sqlalchemy
+orm~=0.1
+
+https://github.com/encode/databases/zipball/master
+aiosqlite
+asyncpg
+psycopg2-binary
