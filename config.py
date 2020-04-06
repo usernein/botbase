@@ -1,35 +1,37 @@
 import asyncio
+import base64
 import json
 import os
 import yaml
 
-from base64 import b64decode, b64encode
+from dotenv import load_dotenv
 from langs import Langs
 
 from pyromod import listen, filters
 from pyrogram import Client
 from utils import tryint
 
-if os.path.exists('env.json'):
-    with open('env.json', 'r') as fp:
-        config_json = json.load(fp)
-    os.environ.update(**config_json)
+# Load variables on .env to os.environ
+load_dotenv()
 
-for required_env in ['LOGS_CHAT', 'SUDOERS_LIST', 'DATABASE_URL']:
-    if required_env not in os.environ:
-        raise AttributeError(f'Missing required env variable: {required_env}')
-    if not os.getenv(required_env):
-        raise ValueError(f'Invalid value for required env variable {required_env}')
+def b64encode(value:str):
+    return base64.b64encode(value.encode()).decode()
+def b64decode(value:str):
+    return base64.b64decode(value.encode()).decode()
+
+required_env_vars = ['LOGS_CHAT', 'SUDOERS_LIST', 'DATABASE_URL']
+for required in required_env_vars:
+    if required not in os.environ:
+        raise AttributeError(f'Missing required env variable: {required}')
+    if not os.getenv(required):
+        raise ValueError(f'Invalid value for required env variable {required}')
 
 # Extra **kwargs for creating pyrogram.Client
-# TODO: Beautify this, please
-config = json.loads(
-    b64decode(
-        # e30= is {} encoded
-        os.getenv('PYROGRAM_CONFIG', 'e30=').encode() or b'{}'
-    ).decode()
-)
-app = Client(os.getenv('PYROGRAM_SESSION') or 'bot', plugins={"root":"plugins"}, **config)
+pyrogram_config = os.getenv('PYROGRAM_CONFIG') or b64encode('{}')
+pyrogram_config = b64decode(pyrogram_config)
+pyrogram_config = json.loads(pyrogram_config)
+
+app = Client(os.getenv('PYROGRAM_SESSION') or 'bot', plugins={"root":"plugins"}, **pyrogram_config)
 app.set_parse_mode('html')
 
 with open('./strings/en.yml') as enfp:

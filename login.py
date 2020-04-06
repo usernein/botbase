@@ -10,6 +10,11 @@ from termcolor import cprint
 
 def raise_ex(e):
     raise e
+
+def b64encode(value:str):
+    return base64.b64encode(value.encode()).decode()
+def b64decode(value:str):
+    return base64.b64decode(value.encode()).decode()
     
 print('Creating config.ini...')
 config = configparser.ConfigParser()
@@ -31,11 +36,22 @@ async def init():
     client = Client('bot', plugins={'enabled':False})
     await client.start()
     
+    session_config = {k:v for section in config.sections() for k,v in config.items(section)}
+    session_config = json.dumps(session_config)
+    session_config = b64encode(session_config)
+    
+    session_string = client.export_session_string()
+    
+    me = await client.get_me()
+    mention = f"@{me.username}" if me.username else me.first_name
+    cprint(f"Logged in as {mention}", 'green')
+    
     print("\nYour PYROGRAM_CONFIG (SENSITIVE DATA, DO NOT SHARE):")
-    cprint(base64.b64encode(json.dumps({k:v for section in config.sections() for k,v in config.items(section)}, separators=(',', ':')).encode()).decode()+"\n", 'blue')
-
+    cprint(session_config, 'blue')
+    
     print("\nYour PYROGRAM_SESSION (SENSITIVE DATA, DO NOT SHARE):")
-    cprint(client.export_session_string()+"\n", 'green')
+    cprint(session_string+"\n", 'green')
+    
     await client.stop()
 
 loop = asyncio.get_event_loop()

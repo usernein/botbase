@@ -5,6 +5,7 @@ pyyaml
 langs
 termcolor
 meval
+python-dotenv
 
 sqlalchemy
 orm~=0.1
