@@ -6,7 +6,7 @@ import traceback
 
 from config import langs, sudoers
 from contextlib import redirect_stdout
-from database import User
+from database import Users
 from pyrogram import Client, Filters
 from termcolor import cprint
 from pyromod.helpers import ikb

@@ -9,11 +9,15 @@ from langs import Langs
 
 from pyromod import listen, filters
 from pyrogram import Client
-from utils import tryint
 
 # Load variables on .env to os.environ
 load_dotenv()
 
+def tryint(value):
+    try:
+        return int(value)
+    except:
+        return value
 def b64encode(value:str):
     return base64.b64encode(value.encode()).decode()
 def b64decode(value:str):

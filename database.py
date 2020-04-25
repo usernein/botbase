@@ -15,7 +15,7 @@ from sqlalchemy.orm import sessionmaker
 database = databases.Database(os.getenv('DATABASE_URL'))
 metadata = sqlalchemy.MetaData()
 
-class User(Model):
+class Users(Model):
     __tablename__ = 'users'
     __database__ = database
     __metadata__ = metadata
@@ -23,10 +23,17 @@ class User(Model):
     key = Integer(primary_key=True)
     id = Integer()
     start_date = DateTime(default=func.now())
-    waiting = JSON(default="{'command':'','back':'','param':''}")
+    waiting_for = String(max_length=50, allow_null=True)
+    waiting_param = String(max_length=200, allow_null=True)
     language = String(max_length=10, default='en')
     timezone = String(max_length=100, default='UTC')
-
+    
+    async def wait_for(self, waiting_for, waiting_param=None):
+        return await self.update(waiting_for=waiting_for, waiting_param=waiting_param)
+        
+    async def wait_end(self):
+        return await self.update(waiting_for=None, waiting_param=None)
+    
 engine = sqlalchemy.create_engine(str(database.url))
 metadata.create_all(engine, checkfirst=True)
 

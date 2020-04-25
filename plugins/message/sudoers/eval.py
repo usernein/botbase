@@ -4,7 +4,7 @@ import re
 import traceback
 
 from config import langs, sudoers
-from database import User
+from database import Users
 from pyrogram import Client, Filters
 from termcolor import cprint
 from meval import meval

@@ -1,15 +1,34 @@
+import inspect
 import pyrogram
+from pyromod.utils import patch, patchable
+import config
 
 # Shortcuts
 ## CallbackQuery.edit
 pyrogram.client.types.bots_and_keyboards.callback_query.CallbackQuery.edit = pyrogram.client.types.bots_and_keyboards.callback_query.CallbackQuery.edit_message_text
 
-def tryint(value):
-    try:
-        return int(value)
-    except:
-        return value
-        
+# Monkeypatching
+## Pass a langs.Langs object as positional argument to all handlers that have from_user in its update
+@patch(pyrogram.client.handlers.handler.Handler)
+class Handler():
+    @patchable
+    def __init__(self, callback: callable, filters=None):
+        async def inject_lang(client, update, *args):
+            language_code = None
+            if getattr(update, 'from_user'):
+                language_code = update.from_user.language_code
+            
+            lang = config.langs.getLanguage(language_code)
+            update.lang = lang
+            
+            spec = inspect.getfullargspec(callback)
+            if len([x for x in spec.args if x != 'self']) > 2 or spec.varargs:
+                args += (lang,)
+            
+            return await callback(client, update, *args)
+        self.callback = inject_lang
+        self.filters = filters
+
 # prefix components:
 space =  '  '
 branch = '│ '
