@@ -15,8 +15,8 @@ from sqlalchemy.orm import sessionmaker
 database = databases.Database(os.getenv('DATABASE_URL'))
 metadata = sqlalchemy.MetaData()
 
-class Users(Model):
-    __tablename__ = 'users'
+class User(Model):
+    __tablename__ = 'user'
     __database__ = database
     __metadata__ = metadata
     
@@ -34,6 +34,7 @@ class Users(Model):
     async def wait_end(self):
         return await self.update(waiting_for=None, waiting_param=None)
     
+
 engine = sqlalchemy.create_engine(str(database.url))
 metadata.create_all(engine, checkfirst=True)
 

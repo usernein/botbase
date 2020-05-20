@@ -1,24 +1,20 @@
-import orm
 import waiters
- 
-from database import Users
+
+from database import User
 from pyrogram import Client, Filters
 
-@Client.on_message(group=-2)
-async def waiter_resolve(client, message, lang):
-    try:
-        User = await Users.objects.get(id=message.from_user.id)
-    except orm.exceptions.NoMatch:
-        return
-    
-    if User and User.waiting_for and User.waiting_for in waiters.funcs:
+@Client.on_message(group=-1)
+async def waiter_resolve(client, message):
+    lang = message.lang
+    exists = await User.objects.get(id=message.from_user.id)
+    if exists and exists.waiting_for in waiters.funcs:
         if message.text == '/cancel':
             await message.reply(lang.command_canceled)
-            await User.wait_end()
+            await exists.wait_end()
             message.stop_propagation()
         elif message.text == '/start':
-            await User.wait_end()
+            await exists.wait_end()
             
-        await waiters.funcs[User.waiting_for]['func'](client, message, User)
+        await waiters.funcs[exists.waiting_for]['func'](client, message, exists)
         message.stop_propagation()
         

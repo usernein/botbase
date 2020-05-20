@@ -1,7 +1,7 @@
 # Environment variables that the bot may use
-NAME: English
-LANGUAGE_CODE: en
-TIMEZONE: UTC
+NAME: Portuguese
+LANGUAGE_CODE: pt
+TIMEZONE: America/Sao_Paulo
 
 # the back button on many menus
 back: «
@@ -17,20 +17,19 @@ start_log: |-
     
 # /start
 start_text: |-
-    👾 Hello, <b>{from_user.first_name}</b>! I'm a basic bot made with Pyrogram.
+    👾 Olá, <b>{from_user.first_name}</b>! Eu sou um bot básico feito com Pyrogram.
     
-    🗃 Source: github.com/usernein/botbase
+    🗃 Código-fonte: github.com/usernein/botbase
 
 # the button at /start
-help: ❕ Help
+help: ❕ Ajuda
 # the help menu (accessible by clicking the button) and /help
 help_text: Help! <i><s>(i need somebody)</s></i>
 
 # the button at /start
-about: ❔ About
+about: ❔ Sobre
 # the about menu (accessible by clicking the button)
 about_text: |-
-    👾 I'm a basic bot.
-    I exist to be a start point for other bots.
-
-executed_cmd: Command executed
+    👾 Eu sou um bot básico.
+    Eu existo para ser um ponto de início para outros bots.
+executed_cmd: Comando executado

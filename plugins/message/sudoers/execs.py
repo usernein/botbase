@@ -1,30 +1,38 @@
 import asyncio
 import html
 import io
-import re
 import traceback
 
-from config import langs, sudoers
+from config import sudoers
 from contextlib import redirect_stdout
-from database import Users
+from database import User
 from pyrogram import Client, Filters
-from termcolor import cprint
-from pyromod.helpers import ikb
 
-@Client.on_message(Filters.command("exec") & Filters.user(sudoers))
+@Client.on_message(Filters.regex("^/exec\s(?P<code>.+)") & Filters.user(sudoers))
 async def execs(client, message):
     lang = message.lang
     strio = io.StringIO()
-    code = re.split(r"[\n ]+", message.text, 1)[1]
-    exec('async def __ex(client, message): ' + ' '.join('\n ' + l for l in code.split('\n')))
+    code = message.matches[0]['code']
+    
+    # Shortcuts that will be available for the user code
+    reply = message.reply_to_message
+    user_id = (reply or message).from_user.id
+    user = await User.objects.get(id=user_id)
+    
+    code_function = "async def __ex(client, message):"
+    for line in code.split('\n'):
+        code_function += f"\n    {line}"
+    exec(code_function)
+    
     with redirect_stdout(strio):
         try:
             await locals()["__ex"](client, message)
         except:
-            return await message.reply(f'<b>{html.escape(traceback.format_exc())}</b>')
+            traceback_string = traceback.format_exc()
+            return await message.reply(f'<b>{html.escape(traceback_string)}</b>')
     
-    out = lang.executed_cmd
+    output = lang.executed_cmd
     if strio.getvalue():
-        out = f"<code>{html.escape(strio.getvalue())}</code>"
+        output = f"<code>{html.escape(strio.getvalue())}</code>"
         
-    await message.reply(out)
+    await message.reply(output)
