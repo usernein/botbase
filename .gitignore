@@ -55,6 +55,6 @@ test.py
 *.session-journal
 .env
 *.ini
-*.sqlite
+*.sqlite*
 debug.*
 *errors.txt

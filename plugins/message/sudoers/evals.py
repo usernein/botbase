@@ -15,7 +15,7 @@ async def evals(client, message):
     reply = message.reply_to_message
     user_id = (reply or message).from_user.id
     try:
-        user = await User.objects.get(id=user_id)
+        user = await User.get(id=user_id)
     except:
         user = None
     

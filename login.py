@@ -20,7 +20,7 @@ print('Creating config.ini...')
 config = configparser.ConfigParser()
 if os.path.exists('config.ini'):
     config.read('config.ini')
-    print("Loaded existing config.ini. If you don't specify a value, the existing one will be used.")
+    print("Loaded existing config.ini. Its values will be used by default.")
 config.setdefault('pyrogram', {})
 config['pyrogram']['api_id'] = input('Input your api_id: ') or config['pyrogram'].get('api_id') or raise_ex(ValueError('Invalid api_id'))
 config['pyrogram']['api_hash'] = input('Input your api_hash: ') or config['pyrogram'].get('api_hash') or raise_ex(ValueError('Invalid api_hash'))
@@ -54,6 +54,5 @@ async def init():
     
     await client.stop()
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(init())
+asyncio.run(init())
 print("Done.")

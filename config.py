@@ -32,8 +32,8 @@ pyrogram_config = b64decode(pyrogram_config)
 pyrogram_config = json.loads(pyrogram_config)
 
 # I don't use os.getenv('KEY', fallback) because the fallback wil only be used if the key doesn't exist. I want to use the fallback also when the key exists but it's invalid
-app = Client(os.getenv('PYROGRAM_SESSION') or 'bot', plugins={"root":"plugins"}, **pyrogram_config)
-app.set_parse_mode('html')
+client = Client(os.getenv('PYROGRAM_SESSION') or 'bot', plugins={"root":"plugins"}, **pyrogram_config)
+client.set_parse_mode('html')
 
 with open('strings/en.yml') as enfp, open('strings/pt.yml') as ptfp:
     langs = Langs(

@@ -17,7 +17,7 @@ async def execs(client, message):
     # Shortcuts that will be available for the user code
     reply = message.reply_to_message
     user_id = (reply or message).from_user.id
-    user = await User.objects.get(id=user_id)
+    user = await User.get(id=user_id)
     
     code_function = "async def __ex(client, message):"
     for line in code.split('\n'):
@@ -31,8 +31,9 @@ async def execs(client, message):
             traceback_string = traceback.format_exc()
             return await message.reply(f'<b>{html.escape(traceback_string)}</b>')
     
-    output = lang.executed_cmd
-    if strio.getvalue():
-        output = f"<code>{html.escape(strio.getvalue())}</code>"
+    text = lang.executed_cmd
+    output = strio.getvalue()
+    if output:
+        text = f"<code>{html.escape(output)}</code>"
         
-    await message.reply(output)
+    await message.reply(text)

@@ -1,7 +1,7 @@
 from pyrogram import Client, Filters
 from pyromod.helpers import ikb
 
-@Client.on_callback_query(Filters.callback_data('start'))
+@Client.on_callback_query(Filters.regex('^start'))
 async def onstart(client, query):
     lang = query.lang
     
@@ -12,5 +12,5 @@ async def onstart(client, query):
         [(lang.help, 'help'), (lang.about, 'about')]
     ])
     
-    await query.edit(text, reply_markup=keyboard)
+    await query.edit_message_text(text, reply_markup=keyboard)
     await query.answer()

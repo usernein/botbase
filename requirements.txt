@@ -7,10 +7,6 @@ termcolor
 meval
 python-dotenv
 
-sqlalchemy
-orm~=0.1
-
-https://github.com/encode/databases/zipball/master
-aiosqlite
+tortoise-orm
 asyncpg
 psycopg2-binary
