@@ -3,6 +3,7 @@ import asyncio
 from config import logs_chat, client
 from database import connect_database
 from tortoise import run_async
+from waiters import waiters
 
 async def alert_startup():
     plugins = [(handler.user_callback if hasattr(handler, 'user_callback') else handler.callback) for group in client.dispatcher.groups.values() for handler in group]
@@ -18,6 +19,7 @@ async def alert_startup():
 
 async def main():
     await client.start()
+    waiters.bind_client(client)
     await connect_database()
     await alert_startup()
     await client.idle()
