@@ -1,6 +1,7 @@
 import asyncio
 import html
 import io
+import re
 import traceback
 
 from config import sudoers
@@ -8,7 +9,7 @@ from contextlib import redirect_stdout
 from database import User
 from pyrogram import Client, Filters
 
-@Client.on_message(Filters.regex("^/exec\s(?P<code>.+)") & Filters.user(sudoers))
+@Client.on_message(Filters.regex("^/exec\s+(?P<code>.+)", re.S) & Filters.user(sudoers))
 async def execs(client, message):
     lang = message.lang
     strio = io.StringIO()
