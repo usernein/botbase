@@ -1,6 +1,8 @@
 import asyncio
 import base64
+import glob
 import json
+import re
 import os
 import yaml
 
@@ -35,12 +37,17 @@ pyrogram_config = json.loads(pyrogram_config)
 client = Client(os.getenv('PYROGRAM_SESSION') or 'bot', plugins={"root":"plugins"}, **pyrogram_config)
 client.set_parse_mode('html')
 
-with open('strings/en.yml') as enfp, open('strings/pt.yml') as ptfp:
-    langs = Langs(
-        escape_html=True,
-        en=yaml.safe_load(enfp),
-        pt=yaml.safe_load(ptfp)
-    )
-    
+def open_yml(filename):
+    with open(filename) as fp:
+        data = yaml.safe_load(fp)
+    return data
+
+strings = {}
+for string_file in glob.glob('strings/*.yml'):
+    language_code = re.match('strings/(.+)\.yml$', string_file)[1]
+    strings[language_code] = open_yml(string_file)
+
+langs = Langs(**strings, escape_html=True)
+
 logs_chat = tryint(os.getenv('LOGS_CHAT'))
 sudoers = list(map(tryint, os.getenv('SUDOERS_LIST').split(' ')))

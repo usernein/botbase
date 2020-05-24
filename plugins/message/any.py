@@ -5,9 +5,9 @@ from pyrogram import Client, Filters
 # Getting the language to use
 @Client.on_message(group=-2)
 async def deflang(client, message):
-    message.lang = langs.getLanguage(message.from_user.language_code)
+    message.lang = langs.get_language(message.from_user.language_code)
     # Add the user if it's not added yet
-    await User.get_or_create({'language': message.lang.language}, id=message.from_user.id)
+    await User.get_or_create({'language': message.lang.code}, id=message.from_user.id)
     
 # Define what updates to reject
 @Client.on_message(~Filters.private | Filters.edited)
