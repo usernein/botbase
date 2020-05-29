@@ -10,12 +10,10 @@ async def onname(client, message):
 
 # Sample of waiter usage
 @waiters.add_handler('name', ~Filters.text)
-async def on_name_photo(client, message, user):
-    await message.reply('Hey i only read text')
+async def on_name_reject(client, message, user):
+    await message.reply('Hey, i only read text.')
 
 @waiters.add_handler('name')
 async def on_name(client, message, user):
-    if not message.text:
-        return await message.reply('Please send your name in a text message.')
     await message.reply(f'Ok, your name is {message.text}. I am not waiting for it anymore.')
     await user.wait_end()
