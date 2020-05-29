@@ -11,14 +11,15 @@ class User(Model):
     start_date = fields.DatetimeField(auto_now_add=True)
     waiting_for = fields.CharField(max_length=255, null=True)
     waiting_param = fields.CharField(max_length=255, null=True)
+    waiting_cancelable = fields.CharField(max_length=255, null=True)
     language = fields.CharField(max_length=255, default='en')
     timezone = fields.CharField(max_length=255, default='UTC')
     
-    async def wait_for(self, waiting_for, waiting_param=None):
-        return await self.get(key=self.key).update(waiting_for=waiting_for, waiting_param=waiting_param)
+    async def wait_for(self, waiting_for, waiting_param=None, cancelable=True):
+        return await self.get(key=self.key).update(waiting_for=waiting_for, waiting_param=waiting_param, waiting_cancelable=cancelable)
     
     async def wait_end(self):
-        return await self.get(key=self.key).update(waiting_for=None, waiting_param=None)
+        return await self.get(key=self.key).update(waiting_for=None, waiting_param=None, waiting_cancelable=None)
     
 async def connect_database():
     await Tortoise.init(

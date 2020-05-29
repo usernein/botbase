@@ -6,15 +6,6 @@ TIMEZONE: UTC
 # the back button on many menus
 back: «
 
-start_log: |-
-    👾 Bot started!
-    🖇 Loaded <code>{plugins_count}</code> plugins:
-    <code>{plugins_text}</code>
-    
-    🏷 <b>app_version</b>: <code>{client.app_version}</code>
-    🛸 <b>device_model</b>: <code>{client.device_model}</code>
-    💻 <b>system_version</b>: <code>{client.system_version}</code>
-    
 # /start
 start_text: |-
     👾 Hello, <b>{from_user.first_name}</b>! I'm a basic bot made with Pyrogram.
@@ -34,3 +25,7 @@ about_text: |-
     I exist to be a start point for other bots.
 
 executed_cmd: Command executed
+command_canceled: Command <i>{command}</i> canceled.
+choose_language: |-
+    🌎 Choose your language:
+language_chose: ✅ Language set!

@@ -9,6 +9,10 @@ async def onname(client, message):
     await message.reply('This is an example of waiter. Send me your name.')
 
 # Sample of waiter usage
+@waiters.add_handler('name', ~Filters.text)
+async def on_name_photo(client, message, user):
+    await message.reply('Hey i only read text')
+
 @waiters.add_handler('name')
 async def on_name(client, message, user):
     if not message.text:

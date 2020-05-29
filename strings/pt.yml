@@ -1,20 +1,11 @@
 # Environment variables that the bot may use
-NAME: Portuguese
-LANGUAGE_CODE: pt
+NAME: Português
+LANGUAGE_CODE: ptbr
 TIMEZONE: America/Sao_Paulo
 
 # the back button on many menus
 back: «
 
-start_log: |-
-    👾 Bot started!
-    🖇 Loaded <code>{plugins_count}</code> plugins:
-    <code>{plugins_text}</code>
-    
-    🏷 <b>app_version</b>: <code>{client.app_version}</code>
-    🛸 <b>device_model</b>: <code>{client.device_model}</code>
-    💻 <b>system_version</b>: <code>{client.system_version}</code>
-    
 # /start
 start_text: |-
     👾 Olá, <b>{from_user.first_name}</b>! Eu sou um bot básico feito com Pyrogram.
@@ -33,3 +24,7 @@ about_text: |-
     👾 Eu sou um bot básico.
     Eu existo para ser um ponto de início para outros bots.
 executed_cmd: Comando executado
+command_canceled: Comando <i>{command}</i> cancelado.
+choose_language: |-
+    🌎 Escolha seu idioma:
+language_chose: ✅ Idioma configurado!
