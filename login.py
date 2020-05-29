@@ -3,9 +3,9 @@ import base64
 import configparser
 import json
 import os
+
 from sys import argv
 
-from pyrogram import Client
 from termcolor import cprint
 
 def raise_ex(e):
@@ -15,24 +15,43 @@ def b64encode(value:str):
     return base64.b64encode(value.encode()).decode()
 def b64decode(value:str):
     return base64.b64decode(value.encode()).decode()
-    
-print('Creating config.ini...')
+
 config = configparser.ConfigParser()
+
+cprint('Creating config.ini...', 'green')
 if os.path.exists('config.ini'):
     config.read('config.ini')
-    print("Loaded existing config.ini. Its values will be used by default.")
+    cprint("Loaded existing config.ini. Its values will be used by default.", 'yellow')
+elif os.path.exists(os.path.expanduser('~/.pyrogramrc')):
+    config.read(os.path.expanduser('~/.pyrogramrc'))
+    cprint("Loaded ~/.pyrogramrc. Its values will be used by default.", 'yellow')
+
 config.setdefault('pyrogram', {})
-config['pyrogram']['api_id'] = input('Input your api_id: ') or config['pyrogram'].get('api_id') or raise_ex(ValueError('Invalid api_id'))
-config['pyrogram']['api_hash'] = input('Input your api_hash: ') or config['pyrogram'].get('api_hash') or raise_ex(ValueError('Invalid api_hash'))
-config['pyrogram']['bot_token'] = input('Input the bot token: ') or config['pyrogram'].get('bot_token') or raise_ex(ValueError('Invalid bot token'))
+
+for key in ['api_id', 'api_hash', 'bot_token']:
+    ask_text = f"\nType your {key}"
+    if key in config['pyrogram']:
+        default_value = config['pyrogram'][key]
+        ask_text += f" (default: {default_value})"
+    ask_text += "\n>>> "
+    value = input(ask_text)
+    
+    if not value:
+        if key not in config['pyrogram']:
+            raise ValueError(f"Invalid value for {key}")
+        value = default_value
+        cprint(f"    Default value used: {value}", 'yellow')
+    
+    config['pyrogram'][key] = value
 
 with open('config.ini','w') as fp:
     config.write(fp)
 
 async def init():
-    print('Logging in and creating new .session file...')
+    cprint('\nLogging in and creating new .session file...', 'green')
     if os.path.exists('bot.session'):
         os.remove('bot.session')
+    from pyrogram import Client
     client = Client('bot', plugins={'enabled':False})
     await client.start()
     
@@ -50,9 +69,9 @@ async def init():
     cprint(session_config, 'blue')
     
     print("\nYour PYROGRAM_SESSION (SENSITIVE DATA, DO NOT SHARE):")
-    cprint(session_string+"\n", 'green')
+    cprint(session_string+"\n", 'blue')
     
     await client.stop()
 
 asyncio.run(init())
-print("Done.")
+cprint("Done.", 'green')
