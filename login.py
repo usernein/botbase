@@ -28,7 +28,11 @@ elif os.path.exists(os.path.expanduser('~/.pyrogramrc')):
 
 config.setdefault('pyrogram', {})
 
-for key in ['api_id', 'api_hash', 'bot_token']:
+fields = ['api_id', 'api_hash', 'bot_token'];
+if len(argv) > 1 and argv[1] == 'user':
+    fields.pop()
+
+for key in fields:
     ask_text = f"\nType your {key}"
     if key in config['pyrogram']:
         default_value = config['pyrogram'][key]
@@ -49,10 +53,10 @@ with open('config.ini','w') as fp:
 
 async def init():
     cprint('\nLogging in and creating new .session file...', 'green')
-    if os.path.exists('bot.session'):
-        os.remove('bot.session')
+    if os.path.exists('client.session'):
+        os.remove('client.session')
     from pyrogram import Client
-    client = Client('bot', plugins={'enabled':False})
+    client = Client('client', plugins={'enabled':False})
     await client.start()
     
     session_config = {k:v for section in config.sections() for k,v in config.items(section)}
