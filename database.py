@@ -22,9 +22,13 @@ class User(Model):
         return await self.get(key=self.key).update(waiting_for=None, waiting_param=None, waiting_cancelable=None)
     
 async def connect_database():
-    await Tortoise.init(
-        db_url=os.getenv('DATABASE_URL'),
-        modules={'models': ['database']}
-    )
+    await Tortoise.init({
+        'connections': {
+            'bot_db': os.getenv('DATABASE_URL')
+        },
+        'apps': {
+            'bot': {'models': [__name__], 'default_connection': 'bot_db'}
+        }
+    })
     # Generate the schema
     await Tortoise.generate_schemas()
