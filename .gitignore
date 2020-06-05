@@ -53,7 +53,7 @@ docs/_build/
 test.py
 *.session
 *.session-journal
-.env
+config.env
 *.ini
 *.sqlite*
 debug.*

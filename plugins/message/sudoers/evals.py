@@ -27,7 +27,11 @@ async def evals(client, message):
         return await message.reply(f"Exception while running the code:\n{traceback_string}")
     else:
         try:
-            await message.reply(f"<code>{html.escape(str(output))}</code>")
+            output = html.escape(str(output)) # escape html special chars
+            text = ''
+            for line in output.splitlines():
+                text += f"<code>{line}</code>\n"
+            await message.reply(text)
         except:
             traceback_string = traceback.format_exc()
             return await message.reply(f"Exception while sending output:\n{traceback_string}")

@@ -35,6 +35,9 @@ async def execs(client, message):
     text = lang.executed_cmd
     output = strio.getvalue()
     if output:
-        text = f"<code>{html.escape(output)}</code>"
+        output = html.escape(output) # escape html special chars
+        text = ''
+        for line in output.splitlines():
+            text += f"<code>{line}</code>\n"
         
     await message.reply(text)

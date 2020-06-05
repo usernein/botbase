@@ -13,8 +13,8 @@ from pyromod import listen, filters
 from pyrogram import Client
 from utils import tryint
 
-# Load variables on .env to os.environ
-load_dotenv()
+# Load variables on config.env to os.environ
+load_dotenv('config.env')
 
 def b64encode(value:str):
     return base64.b64encode(value.encode()).decode()
