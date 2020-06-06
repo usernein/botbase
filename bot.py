@@ -1,4 +1,6 @@
 import asyncio
+import logging
+import os
 
 from config import logs_chat, client
 from database import connect_database
@@ -16,6 +18,15 @@ async def alert_startup():
 - <b>system_version</b>: <code>{client.system_version}</code>
 """
     await client.send_message(logs_chat, started_alert)
+
+class TelegramHandler(logging.Handler):
+    def emit(self, record):
+        text = self.format(record)
+        asyncio.ensure_future(client.send_message(logs_chat, text))
+    
+if os.getenv('DEBUG'):
+    logger = logging.getLogger('pyrogram.client.ext.dispatcher')
+    logger.addHandler(TelegramHandler(logging.DEBUG))
 
 async def main():
     await client.start()
