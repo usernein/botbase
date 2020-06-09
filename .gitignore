@@ -58,3 +58,5 @@ config.env
 *.sqlite*
 debug.*
 *errors.txt
+downloads/
+custom/

@@ -4,6 +4,7 @@ import glob
 import json
 import re
 import os
+import pyrogram
 import yaml
 
 from dotenv import load_dotenv
@@ -11,7 +12,7 @@ from langs import Langs
 
 from pyromod import listen, filters
 from pyrogram import Client
-from utils import tryint
+from utils import tryint, query_edit, message_remove_keyboard, message_reply
 
 # Load variables on config.env to os.environ
 load_dotenv('config.env')
@@ -33,8 +34,13 @@ pyrogram_config = os.getenv('PYROGRAM_CONFIG') or b64encode('{}')
 pyrogram_config = b64decode(pyrogram_config)
 pyrogram_config = json.loads(pyrogram_config)
 
+# All monkeypatch must be done before the Client instance is created
+pyrogram.client.types.CallbackQuery.edit = query_edit
+pyrogram.client.types.Message.remove_keyboard = message_remove_keyboard
+pyrogram.client.types.Message.reply = message_reply
+
 # I don't use os.getenv('KEY', fallback) because the fallback wil only be used if the key doesn't exist. I want to use the fallback also when the key exists but it's invalid
-client = Client(os.getenv('PYROGRAM_SESSION') or 'client', plugins={"root":"plugins"}, **pyrogram_config)
+client = Client(os.getenv('PYROGRAM_SESSION') or 'client', plugins={"root":"handlers"}, **pyrogram_config)
 client.set_parse_mode('html')
 
 def open_yml(filename):
@@ -43,9 +49,14 @@ def open_yml(filename):
     return data
 
 strings = {}
-for string_file in glob.glob('strings/*.yml'):
-    language_code = re.match('strings/(.+)\.yml$', string_file)[1]
-    strings[language_code] = open_yml(string_file)
+for string_file in glob.glob('strings/**/*.yml', recursive=True):
+    language_code = re.search('/(.+?)\.yml$', string_file)[1]
+    strings_dict = open_yml(string_file)
+    if len(language_code) > 30 or 'NAME' not in strings_dict:
+        continue
+    if language_code in strings:
+        print('Loading duplicated', string_file)
+    strings[language_code] = strings_dict
 
 langs = Langs(**strings, escape_html=True)
 
