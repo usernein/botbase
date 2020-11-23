@@ -3,12 +3,11 @@ import html
 import re
 
 from config import sudoers
-from pyrogram import Client, Filters
+from pyrogram import Client, filters
 
-@Client.on_message(Filters.regex("^/cmd\s+(?P<code>.+)", re.S) & Filters.user(sudoers))
+@Client.on_message(filters.regex("^/cmd\s+(?P<code>.+)", re.S) & filters.user(sudoers))
 async def cmd(client, message):
     lang = message.lang
-    code = message.matches[0]['code']
     process = await asyncio.create_subprocess_shell(
         code,
         stdout=asyncio.subprocess.PIPE,

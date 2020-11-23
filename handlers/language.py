@@ -1,5 +1,5 @@
 from database import User
-from pyrogram import Client, Filters
+from pyrogram import Client, filters
 from pyromod.helpers import ikb
 
 def gen_options(lang):
@@ -16,13 +16,13 @@ def gen_options(lang):
     ]
     return ikb(lines)
 
-@Client.on_message(Filters.command('language'))
+@Client.on_message(filters.command('language'))
 async def onlangs(client, message):
     lang = message.lang
     keyboard = gen_options(lang)
     await message.reply(lang.choose_language, reply_markup=keyboard)
 
-@Client.on_callback_query(Filters.regex('^set_lang (?P<code>.+)'))
+@Client.on_callback_query(filters.regex('^set_lang (?P<code>.+)'))
 async def onsetlang(client, query):
     lang = query.lang
     match = query.matches[0]

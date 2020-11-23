@@ -1,7 +1,7 @@
-from pyrogram import Client, Filters
+from pyrogram import Client, filters
 from pyromod.helpers import ikb
 
-@Client.on_callback_query(Filters.regex('^help'))
+@Client.on_callback_query(filters.regex('^help'))
 async def onhelp(client, query):
     lang = query.lang
     

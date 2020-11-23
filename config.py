@@ -14,8 +14,8 @@ from pyromod import listen, filters
 from pyrogram import Client
 from utils import tryint, query_edit, message_remove_keyboard, message_reply
 
-# Load variables on config.env to os.environ
-load_dotenv('config.env')
+# Load variables on .env to os.environ
+load_dotenv('.env')
 
 def b64encode(value:str):
     return base64.b64encode(value.encode()).decode()
@@ -35,9 +35,9 @@ pyrogram_config = b64decode(pyrogram_config)
 pyrogram_config = json.loads(pyrogram_config)
 
 # All monkeypatch must be done before the Client instance is created
-pyrogram.client.types.CallbackQuery.edit = query_edit
-pyrogram.client.types.Message.remove_keyboard = message_remove_keyboard
-pyrogram.client.types.Message.reply = message_reply
+pyrogram.types.CallbackQuery.edit = query_edit
+pyrogram.types.Message.remove_keyboard = message_remove_keyboard
+pyrogram.types.Message.reply = message_reply
 
 # I don't use os.getenv('KEY', fallback) because the fallback wil only be used if the key doesn't exist. I want to use the fallback also when the key exists but it's invalid
 client = Client(os.getenv('PYROGRAM_SESSION') or 'client', plugins={"root":"handlers"}, **pyrogram_config)

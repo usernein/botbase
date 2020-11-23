@@ -1,6 +1,6 @@
 from config import langs
 from database import User
-from pyrogram import Client, Filters
+from pyrogram import Client, filters
 
 # Getting the language to use
 @Client.on_message(group=-2)
@@ -17,6 +17,6 @@ async def deflang(client, message):
     message.lang = langs.get_language(language)
     
 # Define what updates to reject
-@Client.on_message(~Filters.private | Filters.edited)
+@Client.on_message(~filters.private | filters.edited)
 async def reject(client, message):
     message.stop_propagation()

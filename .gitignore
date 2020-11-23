@@ -53,10 +53,11 @@ docs/_build/
 test.py
 *.session
 *.session-journal
-config.env
+.env
 *.ini
 *.sqlite*
 debug.*
 *errors.txt
 downloads/
 custom/
+cache/

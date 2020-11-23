@@ -1,7 +1,7 @@
-from pyrogram import Client, Filters
+from pyrogram import Client, filters
 from pyromod.helpers import ikb
 
-@Client.on_callback_query(Filters.regex('^about'))
+@Client.on_callback_query(filters.regex('^about'))
 async def onabout(client, query):
     lang = query.lang
     text = lang.about_text

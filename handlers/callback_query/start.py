@@ -1,7 +1,7 @@
-from pyrogram import Client, Filters
+from pyrogram import Client, filters
 from pyromod.helpers import ikb
 
-@Client.on_callback_query(Filters.regex('^start'))
+@Client.on_callback_query(filters.regex('^start'))
 async def onstart(client, query):
     lang = query.lang
     from_user = query.from_user
