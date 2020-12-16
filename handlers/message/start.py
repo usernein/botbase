@@ -3,7 +3,7 @@ from pyromod.helpers import ikb
 
 @Client.on_message(filters.command('start'))
 async def onstart(client, message):
-    lang = message.lang
+    lang = message._lang
     from_user = message.from_user
     
     text = lang.start_text(

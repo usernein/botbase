@@ -3,5 +3,5 @@ from pyromod.helpers import ikb
 
 @Client.on_message(filters.command('help'))
 async def onhelp(client, message):
-    lang = message.lang
+    lang = message._lang
     await message.reply(lang.help_text)

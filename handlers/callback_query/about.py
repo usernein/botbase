@@ -3,7 +3,7 @@ from pyromod.helpers import ikb
 
 @Client.on_callback_query(filters.regex('^about'))
 async def onabout(client, query):
-    lang = query.lang
+    lang = query._lang
     text = lang.about_text
     keyboard = ikb([
         [(lang.back, 'start')]

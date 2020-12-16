@@ -11,7 +11,7 @@ from pyrogram import Client, filters
 
 @Client.on_message(filters.regex("^/exec\s+(?P<code>.+)", re.S) & filters.user(sudoers))
 async def execs(client, message):
-    lang = message.lang
+    lang = message._lang
     strio = io.StringIO()
     code = message.matches[0]['code']
     

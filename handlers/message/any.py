@@ -8,13 +8,13 @@ async def deflang(client, message):
     language = 'en'
     from_user = message.from_user
     if not from_user:
-        message.lang = langs.get_language(language)
+        message._lang = langs.get_language(language)
         return
     language = langs.normalize_code(from_user.language_code or "en")
     if message.chat.type == 'private':
         user, is_new = await User.get_or_create({'language': language}, id=from_user.id)
         language = user.language
-    message.lang = langs.get_language(language)
+    message._lang = langs.get_language(language)
     
 # Define what updates to reject
 @Client.on_message(~filters.private | filters.edited)

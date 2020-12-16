@@ -3,7 +3,7 @@ from pyromod.helpers import ikb
 
 @Client.on_callback_query(filters.regex('^start'))
 async def onstart(client, query):
-    lang = query.lang
+    lang = query._lang
     from_user = query.from_user
     
     text = lang.start_text(

@@ -18,13 +18,13 @@ def gen_options(lang):
 
 @Client.on_message(filters.command('language'))
 async def onlangs(client, message):
-    lang = message.lang
+    lang = message._lang
     keyboard = gen_options(lang)
     await message.reply(lang.choose_language, reply_markup=keyboard)
 
 @Client.on_callback_query(filters.regex('^set_lang (?P<code>.+)'))
 async def onsetlang(client, query):
-    lang = query.lang
+    lang = query._lang
     match = query.matches[0]
     lang = lang.get_language(match['code'])
     await User.get(id=query.from_user.id).update(language=lang.code)

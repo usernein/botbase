@@ -8,4 +8,4 @@ async def deflang(client, query):
     from_user = query.from_user
     language = langs.normalize_code(from_user.language_code or "en")
     user = await User.get_or_none(id=from_user.id)
-    query.lang = langs.get_language(user.language if user else language)
+    query._lang = langs.get_language(user.language if user else language)

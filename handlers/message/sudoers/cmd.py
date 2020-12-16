@@ -7,7 +7,7 @@ from pyrogram import Client, filters
 
 @Client.on_message(filters.regex("^/cmd\s+(?P<code>.+)", re.S) & filters.user(sudoers))
 async def cmd(client, message):
-    lang = message.lang
+    lang = message._lang
     process = await asyncio.create_subprocess_shell(
         code,
         stdout=asyncio.subprocess.PIPE,

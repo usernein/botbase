@@ -3,7 +3,7 @@ from pyromod.helpers import ikb
 
 @Client.on_callback_query(filters.regex('^help'))
 async def onhelp(client, query):
-    lang = query.lang
+    lang = query._lang
     
     text = lang.help_text
     keyboard = ikb([

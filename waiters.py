@@ -11,7 +11,7 @@ class Waiters():
         self.client.add_handler(pyrogram.handlers.MessageHandler(self.message_handler), -1)
     
     async def message_handler(self, client: pyrogram.Client, message: pyrogram.types.Message):
-        lang = message.lang
+        lang = message._lang
         user = await User.get(id=message.from_user.id)
         
         for waiter_obj in self.handlers:
