@@ -61,3 +61,6 @@ debug.*
 downloads/
 custom/
 cache/
+
+.idea
+.vscode
