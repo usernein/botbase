@@ -1,6 +1,6 @@
 from config import langs
 from database import User
-from pyrogram import Client, filters
+from pyrogram import Client, filters, enums
 
 
 # Getting the language to use
@@ -12,7 +12,7 @@ async def deflang(client, message):
         message._lang = langs.get_language(language)
         return
     language = langs.normalize_code(from_user.language_code or "en")
-    if message.chat.type == "private":
+    if message.chat.type == enums.ChatType.PRIVATE:
         user, is_new = await User.get_or_create(
             {"language": language}, id=from_user.id
         )
@@ -21,6 +21,7 @@ async def deflang(client, message):
 
 
 # Define what updates to reject
-@Client.on_message(~filters.private | filters.edited)
+@Client.on_edited_message()
+@Client.on_message(~filters.private)
 async def reject(client, message):
     message.stop_propagation()

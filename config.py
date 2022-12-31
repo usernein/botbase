@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from langs import Langs
 
 from pyromod import listen, filters
+from pyrogram.enums import ParseMode
 from pyrogram import Client
 from utils import tryint, query_edit, message_remove_keyboard, message_reply
 
@@ -41,7 +42,7 @@ pyrogram.types.Message.reply = message_reply
 
 # I don't use os.getenv('KEY', fallback) because the fallback wil only be used if the key doesn't exist. I want to use the fallback also when the key exists but it's invalid
 client = Client(os.getenv('PYROGRAM_SESSION') or 'client', plugins={"root":"handlers"}, **pyrogram_config)
-client.set_parse_mode('html')
+client.set_parse_mode(ParseMode.HTML)
 
 def open_yml(filename):
     with open(filename) as fp:

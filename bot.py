@@ -7,6 +7,7 @@ from database import connect_database
 from tortoise import run_async
 from waiters import waiters
 from pyrogram import idle
+from pyrogram.errors import RPCError
 from rich import print
 
 async def alert_startup():
@@ -46,7 +47,10 @@ async def main():
     await client.start()
     waiters.bind_client(client)
     await connect_database()
-    await alert_startup()
+    try:
+        await alert_startup()
+    except RPCError:
+        print("[yellow]An RPCError occurred while trying to alert_startup()[/]")
     print("[green]Running...[/]")
     await idle()
 

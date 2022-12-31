@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "botbase"
+version = "0.1.0"
+description = "Boilerplate for usernein's bots and userbots"
+authors = ["usernein"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+langs = "^0.1.1"
+meval = "^2.5"
+pyrogram = "^2.0.92"
+pyromod = "^1.5"
+python-dotenv = "^0.21.0"
+pyyaml = "^6.0"
+rich = "^13.0.0"
+tortoise-orm = "^0.19.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

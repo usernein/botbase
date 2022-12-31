@@ -71,7 +71,12 @@ async def init():
         os.remove("client.session")
     from pyrogram import Client
 
-    client = Client("client", plugins={"enabled": False})
+    client = Client(
+        "client",
+        api_id=config["pyrogram"]["api_id"],
+        api_hash=config["pyrogram"]["api_hash"],
+        bot_token=config["pyrogram"]["bot_token"],
+        plugins={"enabled": False})
     await client.start()
 
     session_config = {

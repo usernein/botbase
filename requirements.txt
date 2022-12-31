@@ -1,8 +1,0 @@
-langs==0.1.1
-meval==2.5
-Pyrogram==1.4.0
-pyromod==1.5
-python-dotenv==0.21.0
-PyYAML==6.0
-rich==12.5.1
-tortoise==0.1.1
